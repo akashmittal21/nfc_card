@@ -1,10 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NFC Contact</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pro-Vizi</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(63, 110, 255, 0.22), transparent 35%),
+        linear-gradient(160deg, #07111f 0%, #0b1728 55%, #080d16 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #aeb9c9;
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 34px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 58px;
+
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+
+      color: #ffffff;
+
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+
+      backdrop-filter: blur(12px);
+
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .action-button:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .action-button:active {
+      transform: scale(0.98);
+    }
+
+    .primary {
+      background: #ffffff;
+      color: #07111f;
+    }
+
+    .primary:hover {
+      background: #f1f4f8;
+    }
+
+    .footer {
+      margin-top: 32px;
+      color: #657286;
+      font-size: 12px;
+    }
+
+    #share-status {
+      margin-top: 14px;
+      color: #aeb9c9;
+      font-size: 13px;
+      min-height: 18px;
+    }
+  </style>
 </head>
+
 <body>
-    <a href="sample-contact.vcf">Add Contact</a>
+
+  <main class="card">
+
+    <div class="logo">
+      PRO-VIZI
+    </div>
+
+    <p class="subtitle">
+      Connect. Discover. Experience.
+    </p>
+
+    <div class="buttons">
+
+      <!-- Visit Website -->
+      <a
+        class="action-button primary"
+        href="https://pro-vizi.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Visit Website
+      </a>
+
+      <!-- Add Contact -->
+      <a
+        class="action-button"
+        href="./sample-contact.vcf"
+      >
+        Add Contact
+      </a>
+
+      <!-- Win an iPad -->
+      <a
+        class="action-button"
+        href="#"
+        id="ipad-button"
+      >
+        Win an iPad
+      </a>
+
+      <!-- Share Contact -->
+      <button
+        class="action-button"
+        id="share-button"
+        type="button"
+      >
+        Share Contact
+      </button>
+
+    </div>
+
+    <div id="share-status"></div>
+
+    <div class="footer">
+      Powered by Pro-Vizi
+    </div>
+
+  </main>
+
+  <script>
+    const shareButton = document.getElementById("share-button");
+    const shareStatus = document.getElementById("share-status");
+
+    shareButton.addEventListener("click", async () => {
+
+      const shareData = {
+        title: "Pro-Vizi",
+        text: "Connect with Pro-Vizi",
+        url: window.location.href
+      };
+
+      try {
+
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+
+          await navigator.clipboard.writeText(window.location.href);
+
+          shareStatus.textContent =
+            "Link copied to clipboard.";
+
+          setTimeout(() => {
+            shareStatus.textContent = "";
+          }, 3000);
+        }
+
+      } catch (error) {
+
+        if (error.name !== "AbortError") {
+          shareStatus.textContent =
+            "Unable to share. Please copy the page URL.";
+        }
+
+      }
+
+    });
+
+
+    // Replace this URL with your contest page.
+    document
+      .getElementById("ipad-button")
+      .addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        const contestUrl = "https://pro-vizi.com";
+
+        window.location.href = contestUrl;
+
+      });
+  </script>
+
 </body>
 </html>
